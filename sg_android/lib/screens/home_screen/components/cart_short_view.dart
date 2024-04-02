@@ -33,22 +33,44 @@ class CartShortView extends StatelessWidget {
                 controller.cart.length,
                 (index) => Padding(
                   padding: const EdgeInsets.only(right: kDefaultPadding / 2),
-                  child: Hero(
-                      tag: "${controller.cart[index].product.title}_cartTag",
-                      child: Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: const Color(0xFF66BB69),
+                  child: Stack(
+                    children: [
+                      Hero(
+                        tag: "${controller.cart[index].product.title}_cartTag",
+                        child: Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: const Color(0xFF66BB69),
+                            ),
+                          ),
+                          child: CircleAvatar(
+                            backgroundColor: Colors.white,
+                            backgroundImage: NetworkImage(
+                              controller.cart[index].product.image,
+                            ),
                           ),
                         ),
-                        child: CircleAvatar(
-                          backgroundColor: Colors.white,
-                          backgroundImage: NetworkImage(
-                            controller.cart[index].product.image,
+                      ),
+                      if (controller.cart[index].quantity >
+                          1) // Display *1 or *2 if quantity is greater than 1
+                        Positioned(
+                          right: 0,
+                          child: CircleAvatar(
+                            backgroundColor: kPrimaryColor,
+                            radius: 8,
+                            child: Text(
+                              "${controller.cart[index].quantity}",
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 10,
+                                color: Colors.white,
+                              ),
+                            ),
                           ),
                         ),
-                      )),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -59,7 +81,9 @@ class CartShortView extends StatelessWidget {
           child: Text(
             controller.totalCartItems().toString(),
             style: const TextStyle(
-                fontWeight: FontWeight.bold, color: Colors.white),
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
           ),
         )
       ],

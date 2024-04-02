@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sg_android/model/product.dart';
 import 'package:sg_android/screens/home_screen/deatils/details.dart';
-import 'package:sg_android/screens/home_screen/components/fav_btn.dart';
 import 'package:sg_android/screens/home_screen/components/price.dart';
 import 'package:sg_android/utils/constants.dart';
 
@@ -77,9 +76,18 @@ class ProductCard extends StatelessWidget {
                   ),
                 ),
                 padding: const EdgeInsets.all(kDefaultPadding / 4),
-                child: const Icon(
-                  Icons.shopping_cart,
-                  color: Colors.white,
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Explore",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    Icon(
+                      Icons.navigate_next,
+                      color: Colors.white,
+                    ),
+                  ],
                 ),
               ),
             )
