@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sg_android/controllers/home_screen_controller.dart'; // Import the correct controller
-import 'package:sg_android/utils/constants.dart'; // Update with your actual project name
-import 'package:sg_android/screens/home_screen/components/price.dart'; // Update with your actual project name
-import 'package:cached_network_image/cached_network_image.dart'; // Import CachedNetworkImage package
+import 'package:sg_android/model/product.dart'; // Import Product model
+import 'package:sg_android/utils/constants.dart';
+import 'package:sg_android/screens/home_screen/components/price.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class CartDetailsViewCard extends StatelessWidget {
   const CartDetailsViewCard({
@@ -10,8 +10,7 @@ class CartDetailsViewCard extends StatelessWidget {
     required this.productItem,
   }) : super(key: key);
 
-  final ProductItem
-      productItem; // Ensure that this ProductItem refers to the correct class
+  final ProductItem productItem;
 
   @override
   Widget build(BuildContext context) {
@@ -20,26 +19,24 @@ class CartDetailsViewCard extends StatelessWidget {
       leading: CircleAvatar(
         radius: 25,
         backgroundColor: Colors.white,
-        backgroundImage: CachedNetworkImageProvider(
-            productItem.product.image), // Use CachedNetworkImageProvider
+        backgroundImage: CachedNetworkImageProvider(productItem.product!.image),
       ),
       title: Text(
-        productItem.product.title,
+        productItem.product!.title,
         style: Theme.of(context)
             .textTheme
-            .titleMedium!
+            .titleLarge!
             .copyWith(fontWeight: FontWeight.bold),
       ),
       trailing: FittedBox(
         child: Row(
           children: [
-            const Price(amount: "20"),
-            // You may need to pass the actual price here
+            Price(amount: productItem.product!.price.toStringAsFixed(2)),
             Text(
               "  x ${productItem.quantity}",
               style: Theme.of(context)
                   .textTheme
-                  .titleMedium!
+                  .titleLarge!
                   .copyWith(fontWeight: FontWeight.bold),
             )
           ],

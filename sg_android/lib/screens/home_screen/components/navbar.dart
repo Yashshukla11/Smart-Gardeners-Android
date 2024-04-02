@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:sg_android/controllers/menu.dart'; // Import the Menu widget
 
 class CustomNavBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback onMenuPressed;
@@ -10,12 +12,17 @@ class CustomNavBar extends StatelessWidget implements PreferredSizeWidget {
     required this.onNotificationPressed,
   }) : super(key: key);
 
+  void _handleMenuItemSelected(String menuItem) {
+    // Implement the functionality for handling the selected menu item here
+    if (kDebugMode) {
+      print('Selected menu item: $menuItem');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.white,
-      // Set background color
-      // Set background color
       title: const Text(
         "Smart Gardeners",
         style: TextStyle(

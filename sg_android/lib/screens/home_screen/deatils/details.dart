@@ -4,6 +4,7 @@ import 'package:sg_android/screens/home_screen/deatils/components/cart_counter.d
 import 'package:sg_android/screens/home_screen/components/fav_btn.dart';
 import 'package:sg_android/screens/home_screen/components/price.dart';
 import 'package:sg_android/utils/constants.dart';
+import 'package:sg_android/model/product_purchased.dart'; // Import ProductPurchased class
 
 class DetailsScreen extends StatefulWidget {
   const DetailsScreen({
@@ -36,6 +37,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
             ),
             child: ElevatedButton(
               onPressed: () {
+                // Call the function to add item to cart and pass the product title
+                ProductPurchased().addItemToCart(widget.product.title);
                 widget.onProductAdd();
                 setState(() {
                   _cartTag = '_cartTag';
@@ -90,15 +93,15 @@ class _DetailsScreenState extends State<DetailsScreen> {
                           ),
                     ),
                   ),
-                  const Price(amount: "20.00"),
+                  Price(amount: widget.product.price.toStringAsFixed(2)),
                 ],
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.all(kDefaultPadding),
+            Padding(
+              padding: const EdgeInsets.all(kDefaultPadding),
               child: Text(
-                "Cabbage (comprising several cultivars of Brassica oleracea) is a leafy green, red (purple), or white (pale green) biennial plant grown as an annual vegetable crop for its dense-leaved heads. It is descended from the wild cabbage (B. oleracea var. oleracea), and belongs to the cole crops or brassicas, meaning it is closely related to broccoli and cauliflower (var. botrytis); Brussels sprouts (var. gemmifera); and Savoy cabbage (var. sabauda).",
-                style: TextStyle(
+                widget.product.description,
+                style: const TextStyle(
                   color: Color(0xFFBDBDBD),
                   height: 1.8,
                 ),
@@ -113,17 +116,16 @@ class _DetailsScreenState extends State<DetailsScreen> {
   AppBar buildAppBar() {
     return AppBar(
       leading: const BackButton(
-        color: Colors.black,
+        color: Colors.white,
       ),
-      backgroundColor: kBackgroundColor,
+      backgroundColor: kPrimaryColor,
       elevation: 0,
       centerTitle: true,
       title: const Text(
-        "Fruits",
-        style: TextStyle(color: Colors.black),
+        "Smart Gardeners",
+        style: TextStyle(color: Colors.white),
       ),
       actions: const [
-        LikeButton(radius: 20),
         SizedBox(width: kDefaultPadding),
       ],
     );

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sg_android/controllers/home_screen_controller.dart';
 import 'package:sg_android/screens/home_screen/components/cart_details_view.dart';
@@ -5,6 +6,7 @@ import 'package:sg_android/screens/home_screen/components/cart_short_view.dart';
 import 'package:sg_android/utils/constants.dart';
 import 'package:sg_android/screens/home_screen/components/navbar.dart'; // Import the CustomNavBar widget
 
+import '../../controllers/menu.dart';
 import '../../model/product.dart';
 import 'components/product_card.dart';
 import 'deatils/details.dart';
@@ -27,6 +29,17 @@ class HomeScreen extends StatelessWidget {
       controller.changeHomeState(HomeState.cart);
     } else if (details.primaryDelta! > 12) {
       controller.changeHomeState(HomeState.normal);
+    }
+  }
+
+  void _openDrawer(BuildContext context) {
+    Scaffold.of(context).openDrawer();
+  }
+
+  void _handleMenuItemSelected(String menuItem) {
+    // Implement the functionality for handling the selected menu item here
+    if (kDebugMode) {
+      print('Selected menu item: $menuItem');
     }
   }
 
@@ -68,8 +81,8 @@ class HomeScreen extends StatelessWidget {
                                 const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
                               childAspectRatio: 0.58,
-                              crossAxisSpacing: kDefaultPadding / 4,
-                              mainAxisSpacing: kDefaultPadding / 4,
+                              crossAxisSpacing: kDefaultPadding / 2,
+                              mainAxisSpacing: kDefaultPadding / 2,
                             ),
                             itemBuilder: (context, index) => ProductCard(
                               product: demoProducts[index],
@@ -107,7 +120,8 @@ class HomeScreen extends StatelessWidget {
                         right: 0,
                         child: CustomNavBar(
                           onMenuPressed: () {
-                            // Implement your menu button action here
+                            _openDrawer(
+                                context); // Implement your menu button action here
                           },
                           onNotificationPressed: () {
                             // Implement your notification button action here
@@ -157,6 +171,9 @@ class HomeScreen extends StatelessWidget {
             },
           ),
         ),
+      ),
+      drawer: Menu(
+        onMenuItemSelected: _handleMenuItemSelected,
       ),
     );
   }
