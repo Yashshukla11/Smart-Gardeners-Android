@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart'; // Import Provider
 import 'package:sg_android/controllers/home_screen_controller.dart';
 import 'package:sg_android/screens/home_screen/components/cart_details_view.dart';
 import 'package:sg_android/screens/home_screen/components/cart_short_view.dart';
@@ -12,9 +13,7 @@ import 'components/product_card.dart';
 import 'deatils/details.dart';
 
 class HomeScreen extends StatelessWidget {
-  final HomeController controller = HomeController();
-
-  HomeScreen({super.key});
+  HomeScreen({Key? key}) : super(key: key);
 
   static const Duration panelTransitionDuration = Duration(milliseconds: 500);
 
@@ -24,7 +23,10 @@ class HomeScreen extends StatelessWidget {
   get panelTransition =>
       panelTransitionDuration; // Example height for the cart bar
 
-  void _onVerticalGesture(DragUpdateDetails details) {
+  void _onVerticalGesture(
+    DragUpdateDetails details,
+    HomeController controller,
+  ) {
     if (details.primaryDelta! < -0.7) {
       controller.changeHomeState(HomeState.cart);
     } else if (details.primaryDelta! > 12) {
@@ -45,6 +47,9 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final homeController = Provider.of<HomeController>(
+        context); // Access HomeController using Provider
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -52,7 +57,7 @@ class HomeScreen extends StatelessWidget {
         child: Container(
           color: const Color(0xFFEAEAEA),
           child: AnimatedBuilder(
-            animation: controller,
+            animation: homeController,
             builder: (context, _) {
               return LayoutBuilder(
                 builder: (context, BoxConstraints constraints) {
@@ -61,7 +66,7 @@ class HomeScreen extends StatelessWidget {
                       // Products Grid
                       AnimatedPositioned(
                         duration: panelTransition,
-                        top: controller.homeState == HomeState.normal
+                        top: homeController.homeState == HomeState.normal
                             ? headerHeight
                             : -(constraints.maxHeight -
                                 cartBarHeight * 2 -
@@ -101,7 +106,7 @@ class HomeScreen extends StatelessWidget {
                                       child: DetailsScreen(
                                         product: demoProducts[index],
                                         onProductAdd: () {
-                                          controller.addProductToCart(
+                                          homeController.addProductToCart(
                                               demoProducts[index]);
                                         },
                                       ),
@@ -134,11 +139,14 @@ class HomeScreen extends StatelessWidget {
                         bottom: 0,
                         left: 0,
                         right: 0,
-                        height: controller.homeState == HomeState.normal
+                        height: homeController.homeState == HomeState.normal
                             ? cartBarHeight
                             : (constraints.maxHeight - cartBarHeight),
                         child: GestureDetector(
-                          onVerticalDragUpdate: _onVerticalGesture,
+                          onVerticalDragUpdate: (details) {
+                            _onVerticalGesture(
+                                details, homeController); // Pass HomeController
+                          },
                           child: Container(
                             padding: const EdgeInsets.all(defaultPadding),
                             decoration: const BoxDecoration(
@@ -149,17 +157,18 @@ class HomeScreen extends StatelessWidget {
                             alignment: Alignment.topLeft,
                             child: AnimatedSwitcher(
                               duration: panelTransition,
-                              child: controller.homeState == HomeState.normal
-                                  ? Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: defaultPadding / 2),
-                                      child: CartShortView(
-                                        controller: controller,
-                                        cartColor: Colors
-                                            .white, // Change cart color to white
-                                      ),
-                                    )
-                                  : CartDetailsView(controller: controller),
+                              child:
+                                  homeController.homeState == HomeState.normal
+                                      ? Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: defaultPadding / 2),
+                                          child: CartShortView(
+                                            controller: homeController,
+                                            cartColor: Colors
+                                                .white, // Change cart color to white
+                                          ),
+                                        )
+                                      : CartDetailsView(),
                             ),
                           ),
                         ),

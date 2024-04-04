@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:sg_android/model/product.dart';
 
 enum HomeState { normal, cart }
@@ -7,6 +7,8 @@ class HomeController extends ChangeNotifier {
   HomeState homeState = HomeState.normal;
 
   List<ProductItem> cart = [];
+
+  List<String> purchasedItems = [];
 
   void changeHomeState(HomeState state) {
     homeState = state;
@@ -25,8 +27,35 @@ class HomeController extends ChangeNotifier {
     notifyListeners();
   }
 
-  int totalCartItems() => cart.fold(
-      0, (previousValue, element) => previousValue + element.quantity);
+  void clearCart() {
+    cart.clear();
+
+    print('Cleared Cart. Purchased Items: $purchasedItems');
+    notifyListeners();
+  }
+
+  int get totalCartItems {
+    int total = 0;
+    for (var item in cart) {
+      total += item.quantity;
+    }
+    return total;
+  }
+
+  void storeCart() {
+    if (kDebugMode) {
+      print('Storing cart information...');
+    }
+
+    // Clear the previous list of purchased items
+    purchasedItems.clear();
+    // Add titles of purchased items to the list
+    for (var item in cart) {
+      purchasedItems.add(item.product.title);
+    }
+    // Notify listeners if needed
+    notifyListeners();
+  }
 }
 
 class ProductItem {

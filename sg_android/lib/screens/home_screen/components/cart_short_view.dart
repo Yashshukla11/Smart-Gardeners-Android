@@ -79,7 +79,7 @@ class CartShortView extends StatelessWidget {
         CircleAvatar(
           backgroundColor: kPrimaryColor,
           child: Text(
-            controller.totalCartItems().toString(),
+            controller.totalCartItems.toString(),
             style: const TextStyle(
               fontWeight: FontWeight.bold,
               color: Colors.white,

@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:sg_android/controllers/home_screen_controller.dart'
-    as Controller;
+import 'package:provider/provider.dart'; // Import Provider
+import 'package:sg_android/controllers/home_screen_controller.dart';
 import 'package:sg_android/model/product.dart' as Model;
 import 'package:sg_android/screens/home_screen/components/price.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-
 import '../../../utils/constants.dart';
 
 class CartDetailsView extends StatelessWidget {
-  const CartDetailsView({Key? key, required this.controller}) : super(key: key);
-
-  final Controller.HomeController controller;
+  const CartDetailsView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final homeController = Provider.of<HomeController>(
+        context); // Access HomeController using Provider
+
     // Calculate total amount
     double totalAmount = 0.0;
-    for (var item in controller.cart) {
+    for (var item in homeController.cart) {
       totalAmount += item.product.price * item.quantity;
     }
 
@@ -25,16 +25,20 @@ class CartDetailsView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Center(
-              child: Text("Cart",
-                  style: TextStyle(
-                      color: kPrimaryColor,
-                      fontWeight: FontWeight.normal,
-                      fontSize: 30))),
+            child: Text(
+              "Cart",
+              style: TextStyle(
+                color: kPrimaryColor,
+                fontWeight: FontWeight.normal,
+                fontSize: 30,
+              ),
+            ),
+          ),
           ListView.builder(
             shrinkWrap: true,
-            itemCount: controller.cart.length,
+            itemCount: homeController.cart.length,
             itemBuilder: (context, index) {
-              final Controller.ProductItem productItem = controller.cart[index];
+              final ProductItem productItem = homeController.cart[index];
               return ListTile(
                 contentPadding:
                     const EdgeInsets.symmetric(vertical: kDefaultPadding / 2),
@@ -57,21 +61,22 @@ class CartDetailsView extends StatelessWidget {
                   productItem.product.title,
                   style: Theme.of(context)
                       .textTheme
-                      .titleMedium!
-                      .copyWith(fontWeight: FontWeight.w500),
+                      .titleLarge!
+                      .copyWith(fontWeight: FontWeight.bold),
                 ),
                 trailing: FittedBox(
                   child: Row(
                     children: [
                       Price(
-                          amount:
-                              (productItem.product.price * productItem.quantity)
-                                  .toStringAsFixed(2)),
+                        amount:
+                            (productItem.product.price * productItem.quantity)
+                                .toStringAsFixed(2),
+                      ),
                       Text(
                         "  x ${productItem.quantity}",
                         style: Theme.of(context)
                             .textTheme
-                            .headline6!
+                            .titleLarge!
                             .copyWith(fontWeight: FontWeight.bold),
                       ),
                     ],
@@ -81,9 +86,7 @@ class CartDetailsView extends StatelessWidget {
             },
           ),
           const SizedBox(height: 16), // Add appropriate spacing here
-          const Divider(
-            color: kPrimaryColor,
-          ), // Add a divider
+          const Divider(color: kPrimaryColor), // Add a divider
           const SizedBox(height: 16), // Add spacing after the divider
           Center(
             child: Text(
@@ -93,15 +96,21 @@ class CartDetailsView extends StatelessWidget {
           ),
           const SizedBox(height: 16), // Add spacing after the total
           SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(kPrimaryColor),
-                ),
-                onPressed: () {},
-                child: const Text("Pay Now",
-                    style: TextStyle(color: Colors.white)),
-              )),
+            width: double.infinity,
+            child: ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(kPrimaryColor),
+              ),
+              onPressed: () {
+                // Call the method to store cart information when "Pay Now" button is pressed
+                homeController.storeCart();
+                // Clear the cart after storing the information
+                homeController.clearCart();
+              },
+              child:
+                  const Text("Pay Now", style: TextStyle(color: Colors.white)),
+            ),
+          ),
         ],
       ),
     );
