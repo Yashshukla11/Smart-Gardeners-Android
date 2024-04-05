@@ -21,17 +21,17 @@ class UserDashboardScreen extends StatelessWidget {
         preferredSize: const Size.fromHeight(kToolbarHeight),
         child: Container(
           padding: EdgeInsets.all(MediaQuery.of(context).padding.bottom),
-          decoration: BoxDecoration(
-            color: Colors.white,
+          decoration: const BoxDecoration(
+            color: kPrimaryColor,
           ),
           child: Center(
             child: AppBar(
               backgroundColor: Colors.transparent,
               title: const Text('Dashboard',
-                  style: TextStyle(color: Color(0xFF66BB69))),
+                  style: TextStyle(color: Colors.white)),
               centerTitle: true,
               iconTheme: const IconThemeData(
-                color: Color(0xFF66BB69),
+                color: Colors.white,
               ),
             ),
           ),
@@ -62,14 +62,14 @@ class UserDashboardScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                           boxShadow: const [
                             BoxShadow(
-                              color: Colors.lightGreen,
+                              color: Color(0xff43cea2),
                               spreadRadius: 5,
                               blurRadius: 50,
                               offset: Offset(0, 3),
                             ),
                           ],
                           gradient: const LinearGradient(
-                            colors: [Color(0xffafff85), Color(0xfff9e271)],
+                            colors: [Color(0xff43cea2), Color(0xff185a9d)],
                             stops: [0, 1],
                             begin: Alignment.bottomLeft,
                             end: Alignment.topRight,
@@ -82,29 +82,29 @@ class UserDashboardScreen extends StatelessWidget {
                           children: [
                             Container(
                               child: const Text('You have Contributed',
-                                  style: TextStyle(color: Colors.black)),
+                                  style: TextStyle(color: Colors.white)),
                             ),
                             Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 boxShadow: const [
                                   BoxShadow(
-                                    color: Color(0xffafff85),
+                                    color: Color(0xff185a9d),
                                     spreadRadius: 1,
-                                    blurRadius: 40,
+                                    blurRadius: 80,
                                     offset: Offset(0, 3),
                                   ),
                                 ],
                               ),
                               child: const Text('🪴12🪴',
                                   style: TextStyle(
-                                      color: Colors.black, fontSize: 50)),
+                                      color: Colors.white, fontSize: 50)),
                             ),
                             const Text('Plants to Protect Future',
-                                style: TextStyle(color: Colors.black)),
+                                style: TextStyle(color: Colors.white)),
                             const SizedBox(
                               width: 250,
-                              child: Divider(color: Colors.black),
+                              child: Divider(color: Colors.white),
                             ),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
@@ -114,7 +114,7 @@ class UserDashboardScreen extends StatelessWidget {
                                 children: [
                                   Container(
                                     decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.black),
+                                      border: Border.all(color: Colors.white),
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: const Padding(
@@ -125,12 +125,12 @@ class UserDashboardScreen extends StatelessWidget {
                                           bottom: 10.0),
                                       child: Text('Plant More',
                                           style: TextStyle(
-                                              color: Colors.black,
+                                              color: Colors.white,
                                               fontSize: 15)),
                                     ),
                                   ),
                                   const SizedBox(width: 20),
-                                  const Icon(Icons.share, color: Colors.black),
+                                  const Icon(Icons.share, color: Colors.white),
                                 ],
                               ),
                             ),
@@ -143,17 +143,27 @@ class UserDashboardScreen extends StatelessWidget {
                         const SizedBox(
                           height: 10,
                         ),
-                        const Text(
-                          '🏡Progress Report 🏡',
-                          style: TextStyle(
+                        ShaderMask(
+                          shaderCallback: (bounds) => const LinearGradient(
+                            colors: [Color(0xffde6161), Color(0xff2657eb)],
+                            stops: [0, 1],
+                            begin: Alignment.bottomLeft,
+                            end: Alignment.topRight,
+                          ).createShader(bounds),
+                          child: const Text(
+                            'Progress Report ',
+                            style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFF66BB69)),
+                              color: Colors
+                                  .white, // This color will be covered by gradient
+                            ),
+                          ),
                         ),
                         const SizedBox(
                           width: 150,
                           child: Divider(
-                            color: kPrimaryColor,
+                            color: Colors.black,
                           ),
                         ),
                         // Check if purchasedItems list is empty
@@ -162,8 +172,9 @@ class UserDashboardScreen extends StatelessWidget {
                                 margin: const EdgeInsets.only(top: 100),
                                 height: 400,
                                 child: const Text(
-                                  'No items purchased yet',
-                                  style: TextStyle(fontSize: 18),
+                                  'Start Contributing!',
+                                  style: TextStyle(
+                                      fontSize: 18, color: kPrimaryColor),
                                 ),
                               )
                             : Column(

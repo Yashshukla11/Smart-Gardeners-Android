@@ -49,9 +49,11 @@ class HomeController extends ChangeNotifier {
 
     // Clear the previous list of purchased items
     purchasedItems.clear();
-    // Add titles of purchased items to the list
+    // Add titles of purchased items to the list based on quantity
     for (var item in cart) {
-      purchasedItems.add(item.product.title);
+      for (int i = 0; i < item.quantity; i++) {
+        purchasedItems.add(item.product.title);
+      }
     }
     // Notify listeners if needed
     notifyListeners();
