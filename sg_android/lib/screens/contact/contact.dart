@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sg_android/utils/constants.dart';
 
 class ContactScreen extends StatelessWidget {
   const ContactScreen({Key? key}) : super(key: key);
@@ -7,10 +8,14 @@ class ContactScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Contact Us'),
+        backgroundColor: Colors.black,
+        title: const Text(
+          'Contact Us',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [Color(0xff833ab4), Color(0xfffd1d1d), Color(0xfffcb045)],
             stops: [0, 0.5, 1],

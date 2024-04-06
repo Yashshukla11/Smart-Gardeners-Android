@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart'; // Import the provider package
+import 'package:provider/provider.dart';
 import 'package:sg_android/screens/authentication_screen/components/login_form.dart';
 import 'package:sg_android/screens/contact/contact.dart';
 import 'package:sg_android/screens/home_screen/home_screen.dart';
@@ -16,7 +16,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => HomeController(),
-      // Provide an instance of HomeController
       child: MaterialApp(
         title: 'Your App',
         theme: ThemeData(
@@ -27,8 +26,10 @@ class MyApp extends StatelessWidget {
         routes: {
           '/login': (context) => LoginPage(),
           '/home': (context) => HomeScreen(),
-          '/dashboard': (context) => UserDashboardScreen(
-                purchasedItems: [],
+          '/dashboard': (context) => Consumer<HomeController>(
+                builder: (context, homeController, _) => UserDashboardScreen(
+                  purchasedItems: homeController.purchasedProducts,
+                ),
               ),
           '/profile': (context) => ProfileScreen(),
           '/contact': (context) => ContactScreen(),

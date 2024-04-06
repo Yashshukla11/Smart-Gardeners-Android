@@ -1,4 +1,7 @@
+import 'dart:math';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sg_android/model/product.dart';
 
 enum HomeState { normal, cart }
@@ -7,8 +10,9 @@ class HomeController extends ChangeNotifier {
   HomeState homeState = HomeState.normal;
 
   List<ProductItem> cart = [];
+  List<PurchasedProduct> _purchasedProducts = [];
 
-  List<String> purchasedItems = [];
+  List<PurchasedProduct> get purchasedProducts => _purchasedProducts;
 
   void changeHomeState(HomeState state) {
     homeState = state;
@@ -29,8 +33,8 @@ class HomeController extends ChangeNotifier {
 
   void clearCart() {
     cart.clear();
-
-    print('Cleared Cart. Purchased Items: $purchasedItems');
+    
+    print('Cleared Cart. Purchased Products: $_purchasedProducts');
     notifyListeners();
   }
 
@@ -43,20 +47,44 @@ class HomeController extends ChangeNotifier {
   }
 
   void storeCart() {
-    if (kDebugMode) {
-      print('Storing cart information...');
-    }
-
-    // Clear the previous list of purchased items
-    purchasedItems.clear();
-    // Add titles of purchased items to the list based on quantity
     for (var item in cart) {
       for (int i = 0; i < item.quantity; i++) {
-        purchasedItems.add(item.product.title);
+        Product productDetails = demoProducts
+            .firstWhere((product) => product.title == item.product.title);
+
+        PurchasedProduct purchasedProduct = PurchasedProduct(
+          title: productDetails.title,
+          subcategory: productDetails.subcategory,
+          description: productDetails.description,
+          image: productDetails.image,
+          price: productDetails.price,
+          uniqueCode: generateUniqueCode(productDetails.title),
+        );
+
+        _purchasedProducts.add(purchasedProduct);
+
+        printPurchasedProductDetails(purchasedProduct);
       }
     }
-    // Notify listeners if needed
+
     notifyListeners();
+  }
+
+  String generateUniqueCode(String title) {
+    final random = Random();
+    final suffix = random.nextInt(999999).toString().padLeft(6, '0');
+    return '$title-$suffix';
+  }
+
+  void printPurchasedProductDetails(PurchasedProduct purchasedProduct) {
+    print('Purchased Product:');
+    print('Title: ${purchasedProduct.title}');
+    print('Subcategory: ${purchasedProduct.subcategory}');
+    print('Description: ${purchasedProduct.description}');
+    print('Image URL: ${purchasedProduct.image}');
+    print('Price: ${purchasedProduct.price}');
+    print('Unique Code: ${purchasedProduct.uniqueCode}');
+    print('-----------------------------------------');
   }
 }
 
@@ -81,4 +109,22 @@ class ProductItem {
       quantity = 0;
     }
   }
+}
+
+class PurchasedProduct {
+  final String title;
+  final String subcategory;
+  final String description;
+  final String image;
+  final int price;
+  final String uniqueCode;
+
+  PurchasedProduct({
+    required this.title,
+    required this.subcategory,
+    required this.description,
+    required this.image,
+    required this.price,
+    required this.uniqueCode,
+  });
 }

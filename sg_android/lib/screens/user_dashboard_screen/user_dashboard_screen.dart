@@ -4,14 +4,11 @@ import 'package:provider/provider.dart';
 import 'package:sg_android/controllers/menu.dart';
 import 'package:sg_android/utils/constants.dart';
 import 'package:sg_android/controllers/home_screen_controller.dart';
-import 'package:sg_android/model/product.dart';
 import 'package:sg_android/screens/user_dashboard_screen/components/footer.dart';
 
 class UserDashboardScreen extends StatelessWidget {
-  const UserDashboardScreen({Key? key, required List purchasedItems})
+  const UserDashboardScreen({Key? key, required purchasedItems})
       : super(key: key);
-
-  get progress => null;
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +27,7 @@ class UserDashboardScreen extends StatelessWidget {
               title: const Text('Dashboard',
                   style: TextStyle(color: Colors.white)),
               centerTitle: true,
-              iconTheme: const IconThemeData(
-                color: Colors.white,
-              ),
+              iconTheme: const IconThemeData(color: Colors.white),
             ),
           ),
         ),
@@ -56,9 +51,7 @@ class UserDashboardScreen extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
                         decoration: BoxDecoration(
-                          border: Border.all(
-                              color: Colors.black, // Border color
-                              width: 2),
+                          border: Border.all(color: Colors.black, width: 2),
                           borderRadius: BorderRadius.circular(10),
                           boxShadow: const [
                             BoxShadow(
@@ -140,9 +133,7 @@ class UserDashboardScreen extends StatelessWidget {
                     ),
                     Column(
                       children: [
-                        const SizedBox(
-                          height: 10,
-                        ),
+                        const SizedBox(height: 10),
                         ShaderMask(
                           shaderCallback: (bounds) => const LinearGradient(
                             colors: [Color(0xffde6161), Color(0xff2657eb)],
@@ -166,8 +157,8 @@ class UserDashboardScreen extends StatelessWidget {
                             color: Colors.black,
                           ),
                         ),
-                        // Check if purchasedItems list is empty
-                        homeController.purchasedItems.isEmpty
+                        // Check if purchasedProducts list is empty
+                        homeController.purchasedProducts.isEmpty
                             ? Container(
                                 margin: const EdgeInsets.only(top: 100),
                                 height: 400,
@@ -178,11 +169,8 @@ class UserDashboardScreen extends StatelessWidget {
                                 ),
                               )
                             : Column(
-                                children: homeController.purchasedItems
-                                    .map((itemTitle) {
-                                  // Find the corresponding product
-                                  Product product = demoProducts.firstWhere(
-                                      (product) => product.title == itemTitle);
+                                children: homeController.purchasedProducts
+                                    .map((purchasedProduct) {
                                   return Padding(
                                     padding: const EdgeInsets.only(
                                         top: 15.0,
@@ -196,9 +184,7 @@ class UserDashboardScreen extends StatelessWidget {
                                         height: 100,
                                         decoration: BoxDecoration(
                                           border: Border.all(
-                                              color:
-                                                  Colors.black, // Border color
-                                              width: 1),
+                                              color: Colors.black, width: 1),
                                           borderRadius:
                                               BorderRadius.circular(10),
                                           boxShadow: const [
@@ -236,7 +222,8 @@ class UserDashboardScreen extends StatelessWidget {
                                                     height: 70,
                                                     child: Image(
                                                       image: NetworkImage(
-                                                          product.image),
+                                                          purchasedProduct
+                                                              .image),
                                                     ),
                                                   ),
                                                 ),
@@ -249,54 +236,62 @@ class UserDashboardScreen extends StatelessWidget {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
-                                                      product.title,
+                                                      purchasedProduct.title,
                                                       style: const TextStyle(
                                                           fontSize: 18,
                                                           fontWeight:
                                                               FontWeight.bold),
                                                     ),
                                                     Text(
-                                                      product.subcategory,
+                                                      purchasedProduct
+                                                          .subcategory,
                                                       style: const TextStyle(
                                                           fontSize: 14,
                                                           color: Colors.grey),
+                                                    ),
+                                                    // Place the product unique id here
+                                                    Text(
+                                                      '${purchasedProduct.uniqueCode}',
+                                                      style: const TextStyle(
+                                                        fontSize: 14,
+                                                        color: Colors.black,
+                                                      ),
                                                     ),
                                                   ],
                                                 ),
                                               ),
                                               Center(
                                                 child: Container(
-                                                    decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                          color: Colors.black),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      gradient:
-                                                          const LinearGradient(
-                                                        colors: [
-                                                          Color(0xffcdffb3),
-                                                          Color(0xffffea80)
-                                                        ],
-                                                        stops: [0, 1],
-                                                        begin:
-                                                            Alignment.topLeft,
-                                                        end: Alignment
-                                                            .bottomRight,
-                                                      ),
+                                                  decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        color: Colors.black),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    gradient:
+                                                        const LinearGradient(
+                                                      colors: [
+                                                        Color(0xffcdffb3),
+                                                        Color(0xffffea80)
+                                                      ],
+                                                      stops: [0, 1],
+                                                      begin: Alignment.topLeft,
+                                                      end:
+                                                          Alignment.bottomRight,
                                                     ),
-                                                    child: const Padding(
-                                                      padding:
-                                                          EdgeInsets.all(8.0),
-                                                      child: Text(
-                                                        "Map View",
-                                                        style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
-                                                    )),
+                                                  ),
+                                                  child: const Padding(
+                                                    padding:
+                                                        EdgeInsets.all(8.0),
+                                                    child: Text(
+                                                      "Map View",
+                                                      style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ),
+                                                ),
                                               ),
                                             ],
                                           ),
@@ -306,9 +301,7 @@ class UserDashboardScreen extends StatelessWidget {
                                   );
                                 }).toList(),
                               ),
-                        const SizedBox(
-                          height: 210,
-                        )
+                        const SizedBox(height: 210)
                       ],
                     ),
                   ],
