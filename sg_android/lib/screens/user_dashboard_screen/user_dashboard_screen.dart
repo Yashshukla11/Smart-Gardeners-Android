@@ -244,7 +244,7 @@ class UserDashboardScreen extends StatelessWidget {
                                                     ),
                                                     Text(
                                                       purchasedProduct
-                                                          .subcategory,
+                                                          .subCategory,
                                                       style: const TextStyle(
                                                           fontSize: 14,
                                                           color: Colors.grey),

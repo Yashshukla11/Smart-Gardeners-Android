@@ -1,8 +1,7 @@
 import 'dart:math';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:sg_android/model/product.dart';
+import 'package:sg_android/services/api_service.dart';
 
 enum HomeState { normal, cart }
 
@@ -11,8 +10,11 @@ class HomeController extends ChangeNotifier {
 
   List<ProductItem> cart = [];
   List<PurchasedProduct> _purchasedProducts = [];
+  List<Product> _products = [];
 
   List<PurchasedProduct> get purchasedProducts => _purchasedProducts;
+
+  List<Product> get products => _products;
 
   void changeHomeState(HomeState state) {
     homeState = state;
@@ -33,7 +35,7 @@ class HomeController extends ChangeNotifier {
 
   void clearCart() {
     cart.clear();
-    
+
     print('Cleared Cart. Purchased Products: $_purchasedProducts');
     notifyListeners();
   }
@@ -49,12 +51,12 @@ class HomeController extends ChangeNotifier {
   void storeCart() {
     for (var item in cart) {
       for (int i = 0; i < item.quantity; i++) {
-        Product productDetails = demoProducts
+        Product productDetails = _products
             .firstWhere((product) => product.title == item.product.title);
 
         PurchasedProduct purchasedProduct = PurchasedProduct(
           title: productDetails.title,
-          subcategory: productDetails.subcategory,
+          subCategory: productDetails.subCategory,
           description: productDetails.description,
           image: productDetails.image,
           price: productDetails.price,
@@ -79,12 +81,26 @@ class HomeController extends ChangeNotifier {
   void printPurchasedProductDetails(PurchasedProduct purchasedProduct) {
     print('Purchased Product:');
     print('Title: ${purchasedProduct.title}');
-    print('Subcategory: ${purchasedProduct.subcategory}');
+    print('subCategory: ${purchasedProduct.subCategory}');
     print('Description: ${purchasedProduct.description}');
     print('Image URL: ${purchasedProduct.image}');
     print('Price: ${purchasedProduct.price}');
     print('Unique Code: ${purchasedProduct.uniqueCode}');
     print('-----------------------------------------');
+  }
+
+  Future<void> getProductDetails() async {
+    // Call the ApiService function to fetch product details
+    await ApiService.getProductDetails();
+
+    // After fetching, update the products list
+    _products = demoProducts;
+
+    // Print the updated products list
+    print('Updated products: $_products');
+
+    // Notify listeners after updating the products list
+    notifyListeners();
   }
 }
 
@@ -113,7 +129,7 @@ class ProductItem {
 
 class PurchasedProduct {
   final String title;
-  final String subcategory;
+  final String subCategory;
   final String description;
   final String image;
   final int price;
@@ -121,7 +137,7 @@ class PurchasedProduct {
 
   PurchasedProduct({
     required this.title,
-    required this.subcategory,
+    required this.subCategory,
     required this.description,
     required this.image,
     required this.price,

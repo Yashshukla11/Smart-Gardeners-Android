@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sg_android/utils/constants.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class MyHeaderDrawer extends StatefulWidget {
-  const MyHeaderDrawer({Key? key});
+class MyHeaderDrawer extends StatelessWidget {
+  const MyHeaderDrawer({Key? key}) : super(key: key);
 
-  @override
-  _MyHeaderDrawerState createState() => _MyHeaderDrawerState();
-}
-
-class _MyHeaderDrawerState extends State<MyHeaderDrawer> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -110,7 +106,11 @@ class Menu extends StatelessWidget {
   Widget _buildMenuItem(String title, IconData iconData, BuildContext context) {
     return GestureDetector(
       onTap: () {
-        _navigateToScreen(context, title);
+        if (title == 'Log Out') {
+          _logout(context);
+        } else {
+          _navigateToScreen(context, title);
+        }
       },
       child: Container(
         decoration: BoxDecoration(
@@ -149,11 +149,14 @@ class Menu extends StatelessWidget {
       case 'Contact Us':
         Navigator.pushNamed(context, '/contact');
         break;
-      case 'Log Out':
-        Navigator.pushNamed(context, '/login');
-        break;
       default:
         break;
     }
+  }
+
+  Future<void> _logout(BuildContext context) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('token'); // Delete the token
+    Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
   }
 }

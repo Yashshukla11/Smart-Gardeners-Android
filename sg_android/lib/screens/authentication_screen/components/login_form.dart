@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:sg_android/screens/home_screen/home_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'signup_form.dart'; // Import the SignupPage
+import 'package:sg_android/services/api_service.dart'; // Import the ApiService
+import 'package:shared_preferences/shared_preferences.dart'; // Import shared_preferences
 
 class LoginPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
@@ -9,13 +11,41 @@ class LoginPage extends StatelessWidget {
 
   LoginPage({super.key});
 
-  void _signIn(BuildContext context) {
-    // Perform your custom sign-in logic here
-    // For demonstration purposes, let's navigate to the home page directly
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => HomeScreen()),
-    );
+  void _signIn(BuildContext context) async {
+    // Retrieve email and password from controllers
+    String email = _emailController.text;
+    String password = _passwordController.text;
+
+    // Create a map containing email and password
+    Map<String, dynamic> data = {
+      'email': email,
+      'password': password,
+    };
+
+    // Make a request to the login API
+    Map<String, dynamic>? response = await ApiService.login(data);
+
+    // Check if the response is successful
+    if (response != null) {
+      // Store the token locally
+      String token = response['token'];
+      await _storeToken(token);
+
+      // Navigate to the home page if authentication is successful
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+      );
+    } else {
+      // Handle authentication failure, such as displaying an error message
+      // For now, let's print an error message
+      print('Authentication failed');
+    }
+  }
+
+  Future<void> _storeToken(String token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('token', token);
   }
 
   @override
@@ -117,7 +147,7 @@ class LoginPage extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 25.0),
                       child: GestureDetector(
                         onTap: () {
-                          _signIn(context);
+                          _signIn(context); // Call the _signIn function
                         },
                         child: Container(
                           padding: const EdgeInsets.all(20),

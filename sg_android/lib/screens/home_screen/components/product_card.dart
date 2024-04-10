@@ -52,7 +52,7 @@ class ProductCard extends StatelessWidget {
                   .copyWith(fontWeight: FontWeight.w600),
             ),
             Text(
-              product.subcategory,
+              product.subCategory,
               style: Theme.of(context).textTheme.bodySmall,
             ),
             const SizedBox(height: 8),

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:sg_android/screens/home_screen/home_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'login_form.dart';
+import 'package:sg_android/services/api_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignupPage extends StatelessWidget {
   final TextEditingController _nameController = TextEditingController();
@@ -10,15 +12,48 @@ class SignupPage extends StatelessWidget {
   final TextEditingController _confirmPasswordController =
       TextEditingController();
 
-  SignupPage({super.key});
+  SignupPage({Key? key});
 
-  void _signUp(BuildContext context) {
-    // Perform your custom sign-up logic here
-    // For demonstration purposes, let's navigate to the home page directly
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => HomeScreen()),
-    );
+  void _signUp(BuildContext context) async {
+    Map<String, dynamic> userData = {
+      'username': _nameController.text,
+      'email': _emailController.text,
+      'password': _passwordController.text,
+    };
+
+    Map<String, dynamic>? response = await ApiService.register(userData);
+
+    if (response != null && response.containsKey('token')) {
+      String token = response['token'];
+
+      print('Token: $token'); // Print the token in the terminal
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('token', token);
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Registration Failed'),
+            content: Text('Failed to register. Please try again.'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   @override
@@ -82,9 +117,7 @@ class SignupPage extends StatelessWidget {
                             color: Color(0xFF66BB69),
                           ),
                         ),
-                        onChanged: (value) {
-                          // Handle name input
-                        },
+                        onChanged: (value) {},
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -109,9 +142,7 @@ class SignupPage extends StatelessWidget {
                           ),
                         ),
                         keyboardType: TextInputType.emailAddress,
-                        onChanged: (value) {
-                          // Handle email input
-                        },
+                        onChanged: (value) {},
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -136,9 +167,7 @@ class SignupPage extends StatelessWidget {
                           ),
                         ),
                         obscureText: true,
-                        onChanged: (value) {
-                          // Handle password input
-                        },
+                        onChanged: (value) {},
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -163,9 +192,7 @@ class SignupPage extends StatelessWidget {
                           ),
                         ),
                         obscureText: true,
-                        onChanged: (value) {
-                          // Handle password input
-                        },
+                        onChanged: (value) {},
                       ),
                     ),
                     const SizedBox(height: 10),

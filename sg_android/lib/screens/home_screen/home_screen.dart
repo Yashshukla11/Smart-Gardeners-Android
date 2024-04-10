@@ -50,6 +50,11 @@ class HomeScreen extends StatelessWidget {
     final homeController = Provider.of<HomeController>(
         context); // Access HomeController using Provider
 
+    // Fetch product details when the home screen is built
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      homeController.getProductDetails();
+    });
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -81,7 +86,8 @@ class HomeScreen extends StatelessWidget {
                               horizontal: defaultPadding),
                           child: GridView.builder(
                             padding: const EdgeInsets.all(kDefaultPadding / 8),
-                            itemCount: demoProducts.length,
+                            itemCount: homeController.products.length,
+                            // Use the length of products fetched from the API
                             gridDelegate:
                                 const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
@@ -90,7 +96,8 @@ class HomeScreen extends StatelessWidget {
                               mainAxisSpacing: kDefaultPadding / 2,
                             ),
                             itemBuilder: (context, index) => ProductCard(
-                              product: demoProducts[index],
+                              product: homeController.products[index],
+                              // Use the product from the fetched list
                               press: () {
                                 Navigator.push(
                                   context,
@@ -104,10 +111,12 @@ class HomeScreen extends StatelessWidget {
                                         FadeTransition(
                                       opacity: animation,
                                       child: DetailsScreen(
-                                        product: demoProducts[index],
+                                        product: homeController.products[index],
+                                        // Use the product from the fetched list
                                         onProductAdd: () {
                                           homeController.addProductToCart(
-                                              demoProducts[index]);
+                                              homeController.products[
+                                                  index]); // Use the product from the fetched list
                                         },
                                       ),
                                     ),
