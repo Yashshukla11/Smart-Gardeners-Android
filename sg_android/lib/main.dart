@@ -1,5 +1,5 @@
 import 'dart:io'; // Import for using exit()
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sg_android/screens/authentication_screen/components/login_form.dart';
@@ -11,6 +11,7 @@ import 'package:sg_android/screens/user_dashboard_screen/user_dashboard_screen.d
 import 'package:sg_android/controllers/home_screen_controller.dart';
 import 'package:sg_android/services/api_service.dart'; // Import ApiService
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sg_android/utils/constants.dart';
 
 void main() {
   runApp(MyApp());
@@ -23,7 +24,41 @@ class MyApp extends StatelessWidget {
       future: _getToken(),
       builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator(); // Or any loading indicator
+          return Stack(
+            alignment: Alignment.center,
+            children: <Widget>[
+              Container(
+                color: Colors.white,
+                width: double.infinity,
+                height: double.infinity,
+              ),
+              const SizedBox(
+                width: 10.0, // Adjust as needed
+                height: 10.0, // Adjust as needed
+              ),
+              Container(
+                width: 200,
+                height: 200,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: kPrimaryColor, // Set border color
+                    width: 3.0, // Set border width
+                  ),
+                  shape: BoxShape
+                      .circle, // Set shape to circle if you want a circular border
+                ),
+                child: Center(
+                  child: CachedNetworkImage(
+                    imageUrl:
+                        'https://i.postimg.cc/xCnKqhx9/Screenshot-2024-01-22-at-2-43-19-PM-fotor-bg-remover-20240122151630.png',
+
+                    height: 150,
+                    width: 150, // Make sure the image covers the container
+                  ),
+                ),
+              ), // Replace with your logo path
+            ],
+          ); // Or any loading indicator
         } else {
           if (snapshot.hasData && snapshot.data != null) {
             return FutureBuilder<Map<String, dynamic>?>(
@@ -31,7 +66,43 @@ class MyApp extends StatelessWidget {
               // Check if user exists
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
+                  return Stack(
+                    alignment: Alignment.center,
+                    children: <Widget>[
+                      Container(
+                        color: Colors.white,
+                        width: double.infinity,
+                        height: double.infinity,
+                      ),
+                      const SizedBox(
+                        width: 10.0, // Adjust as needed
+                        height: 10.0, // Adjust as needed
+                      ),
+                      Container(
+                        width: 200,
+                        height: 200,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: kPrimaryColor, // Set border color
+                            width: 3.0, // Set border width
+                          ),
+                          shape: BoxShape.circle,
+
+                          // Set shape to circle if you want a circular border
+                        ),
+                        child: Center(
+                          child: CachedNetworkImage(
+                            imageUrl:
+                                'https://i.postimg.cc/xCnKqhx9/Screenshot-2024-01-22-at-2-43-19-PM-fotor-bg-remover-20240122151630.png',
+
+                            height: 150,
+                            width:
+                                150, // Make sure the image covers the container
+                          ),
+                        ),
+                      ), // Replace with your logo path
+                    ],
+                  );
                 } else {
                   if (snapshot.hasData && snapshot.data != null) {
                     // User exists, navigate to home screen

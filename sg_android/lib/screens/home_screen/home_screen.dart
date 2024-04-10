@@ -51,7 +51,7 @@ class HomeScreen extends StatelessWidget {
         context); // Access HomeController using Provider
 
     // Fetch product details when the home screen is built
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       homeController.getProductDetails();
     });
 

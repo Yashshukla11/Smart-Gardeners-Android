@@ -1,4 +1,5 @@
 class Product {
+  final String id; // Add _id field
   final String title;
   final String subCategory;
   final String description;
@@ -6,6 +7,7 @@ class Product {
   final int price;
 
   Product({
+    required this.id, // Include _id in the constructor
     required this.title,
     required this.price,
     required this.description,

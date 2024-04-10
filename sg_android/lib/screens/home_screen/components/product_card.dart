@@ -44,12 +44,15 @@ class ProductCard extends StatelessWidget {
               ),
             ),
             const Divider(color: Colors.grey), // Add spacing
-            Text(
-              product.title,
-              style: Theme.of(context)
-                  .textTheme
-                  .titleMedium!
-                  .copyWith(fontWeight: FontWeight.w600),
+            SizedBox(
+              height: 20,
+              child: Text(
+                product.title,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium!
+                    .copyWith(fontWeight: FontWeight.w500, fontSize: 14),
+              ),
             ),
             Text(
               product.subCategory,

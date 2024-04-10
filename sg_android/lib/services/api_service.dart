@@ -85,6 +85,7 @@ class ApiService {
         // Loop through the JSON data and populate the demoProducts list
         for (var item in jsonData) {
           Product product = Product(
+            id: item['_id'],
             title: item['title'],
             subCategory: item['subCategory'],
             description: item['description'],
