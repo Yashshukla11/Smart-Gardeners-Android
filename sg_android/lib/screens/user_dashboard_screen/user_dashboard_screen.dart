@@ -6,12 +6,30 @@ import 'package:sg_android/utils/constants.dart';
 import 'package:sg_android/controllers/home_screen_controller.dart';
 import 'package:sg_android/screens/user_dashboard_screen/components/footer.dart';
 
-class UserDashboardScreen extends StatelessWidget {
+class UserDashboardScreen extends StatefulWidget {
   const UserDashboardScreen({Key? key, required purchasedItems})
       : super(key: key);
 
   @override
+  _UserDashboardScreenState createState() => _UserDashboardScreenState();
+}
+
+class _UserDashboardScreenState extends State<UserDashboardScreen> {
+  late List<bool> isPlantedList;
+
+  @override
+  void initState() {
+    super.initState();
+    isPlantedList = List.filled(
+        10, true); // Assuming 10 items, change it according to your data
+  }
+
+  @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      Provider.of<HomeController>(context, listen: false)
+          .getpurchasedProductDetails();
+    });
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
@@ -169,137 +187,140 @@ class UserDashboardScreen extends StatelessWidget {
                                 ),
                               )
                             : Column(
-                                children: homeController.purchasedProducts
-                                    .map((purchasedProduct) {
-                                  return Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 15.0,
-                                        bottom: 15,
-                                        left: 8.0,
-                                        right: 8.0),
-                                    child: SizedBox(
-                                      height: 150,
-                                      child: Container(
-                                        width: double.infinity,
-                                        height: 100,
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: Colors.black, width: 1),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          boxShadow: const [
-                                            BoxShadow(
-                                              color: Colors.lightGreen,
-                                              spreadRadius: 2,
-                                              blurRadius: 10,
-                                              offset: Offset(0, 1),
-                                            ),
-                                          ],
-                                          color: Colors.white,
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  border: Border.all(
-                                                    color: kPrimaryColor,
-                                                    width:
-                                                        2.0, // Increase the width for a bolder border
-                                                  ),
-                                                  color: Colors.white,
-                                                ),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: SizedBox(
-                                                    width: 70,
-                                                    height: 70,
-                                                    child: Image(
-                                                      image: NetworkImage(
-                                                          purchasedProduct
-                                                              .image),
-                                                    ),
-                                                  ),
-                                                ),
+                                children: List.generate(
+                                  homeController.purchasedProducts.length,
+                                  (index) {
+                                    final purchasedProduct =
+                                        homeController.purchasedProducts[index];
+                                    return Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 15.0,
+                                          bottom: 15,
+                                          left: 8.0,
+                                          right: 8.0),
+                                      child: SizedBox(
+                                        height: 150,
+                                        child: Container(
+                                          width: double.infinity,
+                                          height: 100,
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Colors.black, width: 1),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            boxShadow: const [
+                                              BoxShadow(
+                                                color: Colors.lightGreen,
+                                                spreadRadius: 2,
+                                                blurRadius: 10,
+                                                offset: Offset(0, 1),
                                               ),
-                                              const SizedBox(width: 20),
-                                              Container(
-                                                width: 120,
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      purchasedProduct.title,
-                                                      style: const TextStyle(
-                                                          fontSize: 18,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                    Text(
-                                                      purchasedProduct
-                                                          .subCategory,
-                                                      style: const TextStyle(
-                                                          fontSize: 14,
-                                                          color: Colors.grey),
-                                                    ),
-                                                    // Place the product unique id here
-                                                    Text(
-                                                      '${purchasedProduct.uniqueCode}',
-                                                      style: const TextStyle(
-                                                        fontSize: 14,
-                                                        color: Colors.black,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Center(
-                                                child: Container(
+                                            ],
+                                            color: Colors.white,
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                Container(
                                                   decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                        color: Colors.black),
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             10),
-                                                    gradient:
-                                                        const LinearGradient(
-                                                      colors: [
-                                                        Color(0xffcdffb3),
-                                                        Color(0xffffea80)
-                                                      ],
-                                                      stops: [0, 1],
-                                                      begin: Alignment.topLeft,
-                                                      end:
-                                                          Alignment.bottomRight,
+                                                    border: Border.all(
+                                                      color: kPrimaryColor,
+                                                      width: 2.0,
                                                     ),
+                                                    color: Colors.white,
                                                   ),
-                                                  child: const Padding(
+                                                  child: Padding(
                                                     padding:
-                                                        EdgeInsets.all(8.0),
-                                                    child: Text(
-                                                      "Map View",
-                                                      style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontWeight:
-                                                              FontWeight.bold),
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: SizedBox(
+                                                      width: 70,
+                                                      height: 70,
+                                                      child: Image(
+                                                        image: NetworkImage(
+                                                            purchasedProduct
+                                                                .image),
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
-                                            ],
+                                                const SizedBox(width: 20),
+                                                Container(
+                                                  width: 120,
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        purchasedProduct.title,
+                                                        style: const TextStyle(
+                                                            fontSize: 18,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                      Text(
+                                                        purchasedProduct
+                                                            .subCategory,
+                                                        style: const TextStyle(
+                                                            fontSize: 14,
+                                                            color: Colors.grey),
+                                                      ),
+                                                      // Place the product unique id here
+                                                    ],
+                                                  ),
+                                                ),
+                                                Center(
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        isPlantedList[index] =
+                                                            !isPlantedList[
+                                                                index];
+                                                      });
+                                                    },
+                                                    child: Container(
+                                                      width: 80,
+                                                      decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                            color:
+                                                                Colors.black),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                      ),
+                                                      child: Padding(
+                                                        padding:
+                                                            EdgeInsets.all(8.0),
+                                                        child: Text(
+                                                          isPlantedList[index]
+                                                              ? "Planted"
+                                                              : "Map",
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  );
-                                }).toList(),
+                                    );
+                                  },
+                                ),
                               ),
                         const SizedBox(height: 210)
                       ],
@@ -312,7 +333,7 @@ class UserDashboardScreen extends StatelessWidget {
           Positioned(
             left: 0,
             right: 0,
-            bottom: 10, // Adjust the distance from the bottom as needed
+            bottom: 10,
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),

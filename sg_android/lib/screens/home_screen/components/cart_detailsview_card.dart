@@ -10,7 +10,7 @@ class CartDetailsViewCard extends StatelessWidget {
     required this.productItem,
   }) : super(key: key);
 
-  final ProductItem productItem;
+  final Productss productItem;
 
   @override
   Widget build(BuildContext context) {

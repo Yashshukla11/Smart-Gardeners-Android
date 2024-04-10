@@ -12,6 +12,7 @@ import 'package:sg_android/controllers/home_screen_controller.dart';
 import 'package:sg_android/services/api_service.dart'; // Import ApiService
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sg_android/utils/constants.dart';
+import 'package:sg_android/screens/user_dashboard_screen/components/map.dart';
 
 void main() {
   runApp(MyApp());
@@ -118,6 +119,7 @@ class MyApp extends StatelessWidget {
                         routes: {
                           '/login': (context) => LoginPage(),
                           '/signup': (context) => SignupPage(),
+                          '/home': (context) => HomeScreen(),
                           '/dashboard': (context) => Consumer<HomeController>(
                                 builder: (context, homeController, _) =>
                                     UserDashboardScreen(
@@ -127,6 +129,7 @@ class MyApp extends StatelessWidget {
                               ),
                           '/profile': (context) => ProfileScreen(),
                           '/contact': (context) => ContactScreen(),
+                          '/map': (context) => MapPage(),
                         },
                       ),
                     );
@@ -144,6 +147,7 @@ class MyApp extends StatelessWidget {
                         routes: {
                           '/login': (context) => LoginPage(),
                           '/signup': (context) => SignupPage(),
+                          '/home': (context) => HomeScreen(),
                           '/dashboard': (context) => Consumer<HomeController>(
                                 builder: (context, homeController, _) =>
                                     UserDashboardScreen(
@@ -153,6 +157,7 @@ class MyApp extends StatelessWidget {
                               ),
                           '/profile': (context) => ProfileScreen(),
                           '/contact': (context) => ContactScreen(),
+                          '/map': (context) => MapPage(),
                         },
                       ),
                     );
@@ -181,7 +186,8 @@ class MyApp extends StatelessWidget {
                       ),
                   '/profile': (context) => ProfileScreen(),
                   '/contact': (context) => ContactScreen(),
-                  '/login': (context) => LoginPage(), // Add the '/login' route
+                  '/login': (context) => LoginPage(),
+                  '/map': (context) => MapPage(),
                 },
               ),
             );

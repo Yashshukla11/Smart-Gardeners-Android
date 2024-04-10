@@ -16,11 +16,11 @@ class Product {
   });
 }
 
-class ProductItem {
+class Productss {
   int quantity;
   final Product? product;
 
-  ProductItem({this.quantity = 1, required this.product});
+  Productss({this.quantity = 1, required this.product});
 
   void increment() {
     quantity++;

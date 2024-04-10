@@ -5,6 +5,7 @@ import 'package:sg_android/model/product.dart' as Model;
 import 'package:sg_android/screens/home_screen/components/price.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../../utils/constants.dart';
+import '../../../services/api_service.dart'; // Import ApiService
 
 class CartDetailsView extends StatelessWidget {
   const CartDetailsView({Key? key}) : super(key: key);
@@ -102,10 +103,15 @@ class CartDetailsView extends StatelessWidget {
                 backgroundColor: MaterialStateProperty.all(kPrimaryColor),
               ),
               onPressed: () {
-                // Call the method to store cart information when "Pay Now" button is pressed
-                homeController.storeCart();
-                // Clear the cart after storing the information
-                homeController.clearCart();
+                print(homeController.cart);
+
+                ApiService.payNow(homeController.cart.cast<ProductItem>())
+                    .then((success) {
+                  // Clear the cart after payment
+                  if (success) {
+                    homeController.clearCart();
+                  }
+                });
               },
               child:
                   const Text("Pay Now", style: TextStyle(color: Colors.white)),

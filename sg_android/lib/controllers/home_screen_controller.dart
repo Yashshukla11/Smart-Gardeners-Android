@@ -9,10 +9,8 @@ class HomeController extends ChangeNotifier {
   HomeState homeState = HomeState.normal;
 
   List<ProductItem> cart = [];
-  List<PurchasedProduct> _purchasedProducts = [];
+  List<PurchasedProduct> purchasedProducts = [];
   List<Product> _products = [];
-
-  List<PurchasedProduct> get purchasedProducts => _purchasedProducts;
 
   List<Product> get products => _products;
 
@@ -36,7 +34,6 @@ class HomeController extends ChangeNotifier {
   void clearCart() {
     cart.clear();
 
-    print('Cleared Cart. Purchased Products: $_purchasedProducts');
     notifyListeners();
   }
 
@@ -48,46 +45,9 @@ class HomeController extends ChangeNotifier {
     return total;
   }
 
-  void storeCart() {
-    for (var item in cart) {
-      for (int i = 0; i < item.quantity; i++) {
-        Product productDetails = _products
-            .firstWhere((product) => product.title == item.product.title);
+  // Removed storeCart and generateUniqueCode functions
 
-        PurchasedProduct purchasedProduct = PurchasedProduct(
-          title: productDetails.title,
-          subCategory: productDetails.subCategory,
-          description: productDetails.description,
-          image: productDetails.image,
-          price: productDetails.price,
-          uniqueCode: generateUniqueCode(productDetails.title),
-        );
-
-        _purchasedProducts.add(purchasedProduct);
-
-        printPurchasedProductDetails(purchasedProduct);
-      }
-    }
-
-    notifyListeners();
-  }
-
-  String generateUniqueCode(String title) {
-    final random = Random();
-    final suffix = random.nextInt(999999).toString().padLeft(6, '0');
-    return '$title-$suffix';
-  }
-
-  void printPurchasedProductDetails(PurchasedProduct purchasedProduct) {
-    print('Purchased Product:');
-    print('Title: ${purchasedProduct.title}');
-    print('subCategory: ${purchasedProduct.subCategory}');
-    print('Description: ${purchasedProduct.description}');
-    print('Image URL: ${purchasedProduct.image}');
-    print('Price: ${purchasedProduct.price}');
-    print('Unique Code: ${purchasedProduct.uniqueCode}');
-    print('-----------------------------------------');
-  }
+  // Removed printPurchasedProductDetails function
 
   Future<void> getProductDetails() async {
     // Call the ApiService function to fetch product details
@@ -97,10 +57,13 @@ class HomeController extends ChangeNotifier {
     _products = demoProducts;
 
     // Print the updated products list
-    print('Updated products: $_products');
 
     // Notify listeners after updating the products list
     notifyListeners();
+  }
+
+  Future<void> getpurchasedProductDetails() async {
+    await ApiService.getpurchasedProductDetails(this);
   }
 }
 
@@ -128,19 +91,23 @@ class ProductItem {
 }
 
 class PurchasedProduct {
+  final String id; // Add _id field
   final String title;
   final String subCategory;
   final String description;
   final String image;
   final int price;
-  final String uniqueCode;
+  final int cycleStage;
+  final String purchaseDate;
 
   PurchasedProduct({
+    required this.id, // Include _id in the constructor
     required this.title,
-    required this.subCategory,
+    required this.price,
     required this.description,
     required this.image,
-    required this.price,
-    required this.uniqueCode,
+    required this.subCategory,
+    required this.cycleStage,
+    required this.purchaseDate,
   });
 }
