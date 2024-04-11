@@ -68,8 +68,8 @@ class ApiService {
           await prefs.setString('userId', userId);
         }
         // Print the fetched data and user ID
-        print('Fetched data: $responseData');
-        print('User ID: $userId');
+        // print('Fetched data: $responseData');
+        // print('User ID: $userId');
         // Return the fetched data along with the user ID
         return {'userData': responseData, 'userId': userId};
       } else {
@@ -159,7 +159,8 @@ class ApiService {
     }
   }
 
-  static Future<void> getpurchasedProductDetails(HomeController homeController) async {
+  static Future<void> getpurchasedProductDetails(
+      HomeController homeController) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('token');
     if (token == null) {
@@ -178,6 +179,7 @@ class ApiService {
       );
 
       if (response.statusCode == 200) {
+        // debugPrint('Fetched purchased product details: ${response.body}');
         var jsonData = jsonDecode(response.body) as List<dynamic>;
 
         // Clear the purchasedProducts list before populating
@@ -195,6 +197,8 @@ class ApiService {
               price: item['product']['price'],
               cycleStage: item['cycleStage'],
               purchaseDate: item['purchaseDate'],
+              plantedDate: item['plantedDate'] ??
+                  "null", // Provide a default value if plantedDate is null
             );
             homeController.purchasedProducts.add(purchasedProduct);
           }
@@ -209,5 +213,39 @@ class ApiService {
       debugPrint('Error fetching purchased product details: $error');
     }
   }
-}
 
+  static Future<void> updateCycleStage(String productId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
+    if (token == null) {
+      debugPrint('No token found.');
+      return; // Exit the function if token is not found
+    }
+
+    var url = Uri.parse('$baseUrl/user/scan');
+
+    // Print the data before sending
+    debugPrint('Sending update cycle stage request: Product ID - $productId');
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json', // Set content type to JSON
+        },
+        body: jsonEncode({
+          'productId': productId,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        debugPrint('Cycle stage updated successfully!');
+      } else {
+        debugPrint('Failed to update cycle stage: ${response.statusCode}');
+      }
+    } catch (error) {
+      debugPrint('Error updating cycle stage: $error');
+    }
+  }
+}

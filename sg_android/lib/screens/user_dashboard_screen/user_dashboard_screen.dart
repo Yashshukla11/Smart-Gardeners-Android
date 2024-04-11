@@ -6,6 +6,8 @@ import 'package:sg_android/utils/constants.dart';
 import 'package:sg_android/controllers/home_screen_controller.dart';
 import 'package:sg_android/screens/user_dashboard_screen/components/footer.dart';
 
+import '../../services/api_service.dart';
+
 class UserDashboardScreen extends StatefulWidget {
   const UserDashboardScreen({Key? key, required purchasedItems})
       : super(key: key);
@@ -192,6 +194,14 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
                                   (index) {
                                     final purchasedProduct =
                                         homeController.purchasedProducts[index];
+                                    // bool containsPlantedKey =
+                                    //     purchasedProduct.plantedDate === null;
+                                    var isPlanted =
+                                        purchasedProduct.plantedDate != "null"
+                                            ? "True"
+                                            : "False";
+                                    // print(isPlanted);
+                                    // print(purchasedProduct.plantedDate);
                                     return Padding(
                                       padding: const EdgeInsets.only(
                                           top: 15.0,
@@ -280,11 +290,27 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
                                                 Center(
                                                   child: GestureDetector(
                                                     onTap: () {
-                                                      setState(() {
-                                                        isPlantedList[index] =
-                                                            !isPlantedList[
-                                                                index];
-                                                      });
+                                                      if (isPlanted == "True") {
+                                                        // Navigate to map page
+                                                        Navigator.pushNamed(
+                                                            context, '/map');
+                                                      } else {
+                                                        // Handle starting planting
+                                                        ApiService.updateCycleStage(
+                                                            purchasedProduct
+                                                                .id); // Call the function to update cycle stage
+                                                        // Show a message indicating planting has started
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                          const SnackBar(
+                                                            content: Text(
+                                                                'Yup, you have planted!'),
+                                                            duration: Duration(
+                                                                seconds: 2),
+                                                          ),
+                                                        );
+                                                      }
                                                     },
                                                     child: Container(
                                                       width: 80,
@@ -298,12 +324,14 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
                                                       ),
                                                       child: Padding(
                                                         padding:
-                                                            EdgeInsets.all(8.0),
+                                                            const EdgeInsets
+                                                                .all(8.0),
                                                         child: Text(
-                                                          isPlantedList[index]
-                                                              ? "Planted"
-                                                              : "Map",
-                                                          style: TextStyle(
+                                                          isPlanted == "True"
+                                                              ? "Map"
+                                                              : "Start",
+                                                          style:
+                                                              const TextStyle(
                                                             color: Colors.black,
                                                             fontWeight:
                                                                 FontWeight.bold,

@@ -99,6 +99,7 @@ class PurchasedProduct {
   final int price;
   final int cycleStage;
   final String purchaseDate;
+  final String plantedDate;
 
   PurchasedProduct({
     required this.id, // Include _id in the constructor
@@ -109,5 +110,6 @@ class PurchasedProduct {
     required this.subCategory,
     required this.cycleStage,
     required this.purchaseDate,
+    required this.plantedDate,
   });
 }
