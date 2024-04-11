@@ -125,21 +125,30 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
                                 children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.white),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: const Padding(
-                                      padding: EdgeInsets.only(
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.pushNamed(context, '/home');
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        border: Border.all(color: Colors.white),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: const Padding(
+                                        padding: EdgeInsets.only(
                                           left: 20.0,
                                           right: 20.0,
                                           top: 10.0,
-                                          bottom: 10.0),
-                                      child: Text('Plant More',
+                                          bottom: 10.0,
+                                        ),
+                                        child: Text(
+                                          'Plant More',
                                           style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 15)),
+                                            color: Colors.white,
+                                            fontSize: 15,
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   ),
                                   const SizedBox(width: 20),
