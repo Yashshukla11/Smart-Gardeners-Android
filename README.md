@@ -110,39 +110,55 @@ adventure, whether you're a seasoned gardener or just starting your green journe
 ## Getting Started with Your Smart Gardeners[<img src="https://i.postimg.cc/L8rB7nYD/worker.png" alt="Watering Plants" width="40"/>](https://i.postimg.cc/L8rB7nYD/worker.png)
 
 Upon purchasing our hydroponic kit, you'll receive a unique user ID and password. This login
-information grants you access to our dedicated web portal, where you can find comprehensive
+information grants you access to our dedicated web portal and mobile app, where you can find comprehensive
 resources to kickstart your hydroponic gardening journey.
 
 ### Features of the Web Portal:[<img src="https://i.postimg.cc/sxQ5wzjq/growth.png" alt="Watering Plants" width="40"/>](https://i.postimg.cc/sxQ5wzjq/growth.png)
 
-1. *Educational Resources:*
+1. **Educational Info:**
     - Explore a wealth of guides, tutorials, and videos on hydroponic gardening techniques tailored
       for beginners and experienced gardeners alike.
 
-2. *Interactive Chatbot:*
+2. **Plant Information:**
+    - Learn about the plants that can be grown using our hydroponic system, including care tips and
+      ideal growing conditions.
+
+3. **Shop:**
+    - Purchase hydroponic gardening products directly through the web portal for convenience.
+
+4. **User Profile:**
+    - Create and manage your user profile, track your garden's progress, and access personalized
+      recommendations.
+
+5. **Chatbot:**
     - Utilize our user-friendly chatbot for instant assistance. Get answers to your queries,
       troubleshooting tips, and personalized recommendations right at your fingertips.
 
-3. *Unique User Dashboard:*
-    - Your personalized dashboard provides an overview of your hydroponic garden's progress,
+6. **Contact Us/Feedback:**
+    - A dedicated page to reach out to us with any questions, feedback, or suggestions.
+
+### Features of the Mobile App:[<img src="https://i.postimg.cc/FH81G3dQ/mobile-app.png" alt="Watering Plants" width="40"/>]([https://i.postimg.cc/sxQ5wzjq/growth.png](https://i.postimg.cc/FH81G3dQ/mobile-app.png))
+
+1. **Shop:**
+    - Browse and purchase hydroponic gardening products directly through the mobile app.
+
+2. **Personalized Dashboard:**
+    - Access your personalized dashboard for an overview of your hydroponic garden's progress,
       upcoming tasks, and recommendations for optimal plant care.
 
-4. *Reminder System:*
-    - Never miss a crucial task with our dedicated reminder system. Receive timely notifications for
-      tasks such as nutrient pack usage, water level checks, and other essential gardening
-      activities.
+3. **Shareable Contribution Card:**
+    - Easily share your progress and contributions with friends and fellow gardeners through
+      customizable shareable cards.
 
-5. *Product Purchase:*
-    - Purchase hydroponic gardening products directly through the app & for convenience.
-
-6. *Usage Notifications:*
-    - Receive timely notifications on how to use your hydroponic gardening kit effectively.
-
-7. *Plant Tracking:*
+4. **Plant Progress Tracker:**
     - Keep track of each plant's growth and health status within the app.
 
-8. *QR Code Scanning:*
+5. **QR Code Scanner:**
     - Fetch detailed information about specific plants by scanning QR codes provided with the kit.
+
+6. **User Profile:**
+    - Create and manage your user profile, track your garden's progress, and access personalized
+      recommendations.
 
 ### How to Access the Web Portal:
 
